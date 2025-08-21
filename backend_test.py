@@ -199,10 +199,10 @@ class ATSBackendTester:
     def test_resume_analysis_without_job_description(self):
         """Test 5: Resume Analysis without Job Description"""
         try:
-            pdf_content = self.create_test_pdf()
+            text_content = self.create_test_text_file()
             
             files = {
-                'file': ('test_resume.pdf', pdf_content, 'application/pdf')
+                'file': ('test_resume.txt', text_content, 'text/plain')
             }
             
             response = self.session.post(f"{BASE_URL}/resume/analyze", files=files)
