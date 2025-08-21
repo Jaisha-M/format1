@@ -142,12 +142,36 @@ const HomePage = () => {
             <div className="text-center mt-4">
               <Button 
                 variant="outline" 
-                onClick={() => {
-                  setAnalysisResult(mockAnalysisResult);
-                  setUploadStatus('success');
-                  setUploadedFile(new File([''], 'demo-resume.pdf'));
+                onClick={async () => {
+                  // Create a demo file for analysis
+                  const demoResumeText = `John Doe
+Software Engineer
+john.doe@email.com | (555) 123-4567
+
+PROFESSIONAL SUMMARY
+Experienced software engineer with 5 years of experience in full-stack development using JavaScript, React, and Node.js.
+
+EXPERIENCE
+Senior Software Developer | Tech Company | 2020-2024
+• Developed web applications using React and Node.js
+• Collaborated with cross-functional teams on agile projects
+• Implemented API development and database management
+
+EDUCATION
+Bachelor of Science in Computer Science | University | 2019
+
+SKILLS
+JavaScript, React, Node.js, MongoDB, Git, Agile, Team Leadership`;
+                  
+                  // Create a blob and file for demo
+                  const blob = new Blob([demoResumeText], { type: 'text/plain' });
+                  const demoFile = new File([blob], 'demo-resume.txt', { type: 'text/plain' });
+                  
+                  // Trigger analysis with demo file
+                  await handleFileUpload(demoFile);
                 }}
                 className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                disabled={uploadStatus === 'uploading'}
               >
                 🚀 Try Demo Analysis
               </Button>
