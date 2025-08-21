@@ -44,8 +44,8 @@ async def health_check():
         "service": "ATS Resume Checker"
     }
 
-# Add resume analysis routes
-api_router.include_router(resume_router)
+# Include the router in the main app
+app.include_router(api_router)
 
 # Database connection event handlers
 @app.on_event("startup")
