@@ -10,8 +10,8 @@ import uuid
 from datetime import datetime
 
 # Import our custom modules
-from .database import connect_to_mongo, close_mongo_connection, get_database
-from .routes.resume import router as resume_router
+from database import connect_to_mongo, close_mongo_connection, get_database
+from routes.resume import router as resume_router
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
