@@ -94,6 +94,16 @@ class ResumeParser:
             # Return a message indicating the format isn't fully supported
             raise Exception("Legacy .DOC format not fully supported. Please convert to PDF or DOCX.")
     
+    def extract_text_from_txt(self, file_path: str) -> str:
+        """Extract text from TXT file"""
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                text = f.read()
+            return text.strip()
+        except Exception as e:
+            logger.error(f"Error extracting text from TXT: {str(e)}")
+            raise Exception(f"Failed to parse TXT: {str(e)}")
+    
     def parse_resume(self, file_path: str, file_type: str) -> Dict:
         """Main parsing function that routes to appropriate parser"""
         try:
@@ -103,6 +113,8 @@ class ResumeParser:
                 text = self.extract_text_from_docx(file_path)
             elif file_type.lower() == 'doc':
                 text = self.extract_text_from_doc(file_path)
+            elif file_type.lower() == 'txt':
+                text = self.extract_text_from_txt(file_path)
             else:
                 raise Exception(f"Unsupported file type: {file_type}")
             
