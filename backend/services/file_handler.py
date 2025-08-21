@@ -19,7 +19,9 @@ class FileHandler:
             'application/pdf': '.pdf',
             'application/msword': '.doc',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
-            'text/plain': '.txt'
+            'text/plain': '.txt',
+            # Add more lenient content type matching
+            'application/octet-stream': '.pdf'  # Some browsers send PDFs as this
         }
         
         # Maximum file size (10MB)
