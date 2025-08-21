@@ -44,6 +44,9 @@ async def health_check():
         "service": "ATS Resume Checker"
     }
 
+# Include the resume router in the api router
+api_router.include_router(resume_router)
+
 # Include the router in the main app
 app.include_router(api_router)
 
