@@ -50,6 +50,15 @@ api_router.include_router(resume_router)
 # Include the router in the main app
 app.include_router(api_router)
 
+# Database connection event handlers
+@app.on_event("startup")
+async def startup_db_client():
+    await connect_to_mongo()
+
+@app.on_event("shutdown")
+async def shutdown_db_client():
+    await close_mongo_connection()
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
