@@ -593,10 +593,10 @@ class ATSBackendTester:
     def test_processing_time_monitoring(self):
         """Test 15: Processing Time Monitoring"""
         try:
-            pdf_content = self.create_test_pdf()
+            text_content = self.create_test_text_file()
             
             files = {
-                'file': ('timing_test.pdf', pdf_content, 'application/pdf')
+                'file': ('timing_test.txt', text_content, 'text/plain')
             }
             data = {
                 'job_description': 'Performance test job description with various keywords for timing analysis.'
