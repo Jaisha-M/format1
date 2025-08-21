@@ -515,10 +515,10 @@ class ATSBackendTester:
     def test_response_validation(self):
         """Test 14: Response Schema Validation"""
         try:
-            pdf_content = self.create_test_pdf()
+            text_content = self.create_test_text_file()
             
             files = {
-                'file': ('schema_test.pdf', pdf_content, 'application/pdf')
+                'file': ('schema_test.txt', text_content, 'text/plain')
             }
             data = {
                 'job_description': 'Test job description for schema validation.'
