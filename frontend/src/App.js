@@ -58,6 +58,26 @@ const HomePage = () => {
             onFileUpload={handleFileUpload}
             uploadStatus={uploadStatus}
           />
+          
+          {/* Demo Button */}
+          {!analysisResult && (
+            <div className="text-center mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setAnalysisResult(mockAnalysisResult);
+                  setUploadStatus('success');
+                  setUploadedFile(new File([''], 'demo-resume.pdf'));
+                }}
+                className="text-blue-600 border-blue-600 hover:bg-blue-50"
+              >
+                🚀 Try Demo Analysis
+              </Button>
+              <p className="text-xs text-gray-500 mt-2">
+                See how our ATS checker works with sample data
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Job Description Input */}
