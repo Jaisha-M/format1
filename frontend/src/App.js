@@ -7,6 +7,7 @@ import JobDescriptionInput from './components/JobDescriptionInput';
 import ScoreDisplay from './components/ScoreDisplay';
 import IssuesPanel from './components/IssuesPanel';
 import SectionsAnalysis from './components/SectionsAnalysis';
+import { Button } from './components/ui/button';
 import { Toaster } from './components/ui/toaster';
 import { useToast } from './hooks/use-toast';
 import axios from 'axios';
