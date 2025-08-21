@@ -61,10 +61,21 @@ class ResumeParser:
             for page in doc:
                 text += page.get_text()
             doc.close()
+            
+            # Check if we extracted meaningful text
+            if not text or len(text.strip()) < 10:
+                raise Exception("Could not extract text from PDF. The file may be image-based or corrupted.")
+                
             return text.strip()
         except Exception as e:
             logger.error(f"Error extracting text from PDF: {str(e)}")
-            raise Exception(f"Failed to parse PDF: {str(e)}")
+            # Try to provide more helpful error message
+            if "cannot open broken document" in str(e):
+                raise Exception("Invalid or corrupted PDF file. Please ensure the file is a valid PDF document.")
+            elif "password" in str(e).lower():
+                raise Exception("Password-protected PDF files are not supported. Please upload an unprotected PDF.")
+            else:
+                raise Exception(f"Failed to parse PDF: {str(e)}")
     
     def extract_text_from_docx(self, file_path: str) -> str:
         """Extract text from DOCX file"""
