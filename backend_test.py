@@ -424,10 +424,10 @@ class ATSBackendTester:
         """Test 12: Database Integration (verify analysis is saved)"""
         try:
             # First, perform an analysis
-            pdf_content = self.create_test_pdf("Database Test Resume\nSoftware Developer\n\nEXPERIENCE\n• Database design\n• API development\n\nSKILLS\nPython, SQL, MongoDB")
+            text_content = self.create_test_text_file("Database Test Resume\nSoftware Developer\n\nEXPERIENCE\n• Database design\n• API development\n\nSKILLS\nPython, SQL, MongoDB")
             
             files = {
-                'file': ('db_test_resume.pdf', pdf_content, 'application/pdf')
+                'file': ('db_test_resume.txt', text_content, 'text/plain')
             }
             data = {
                 'job_description': 'Database developer position requiring SQL and MongoDB experience.'
@@ -452,7 +452,7 @@ class ATSBackendTester:
                         # Check if our analysis is in the recent analyses
                         recent_analysis = None
                         for analysis in analyses:
-                            if 'db_test_resume.pdf' in analysis.get('file_name', ''):
+                            if 'db_test_resume.txt' in analysis.get('file_name', ''):
                                 recent_analysis = analysis
                                 break
                         
