@@ -181,6 +181,14 @@ async def get_analysis_history(
     Get analysis history with pagination
     """
     try:
+        # Validate parameters
+        if page < 1:
+            page = 1
+        if page_size < 1:
+            page_size = 10
+        if page_size > 100:
+            page_size = 100
+            
         # Calculate skip value
         skip = (page - 1) * page_size
         
