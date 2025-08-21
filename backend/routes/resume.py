@@ -5,10 +5,10 @@ import time
 import logging
 from datetime import datetime
 
-from ..services.resume_parser import ResumeParser
-from ..services.ats_analyzer import ATSAnalyzer
-from ..services.file_handler import FileHandler
-from ..models.analysis import (
+from services.resume_parser import ResumeParser
+from services.ats_analyzer import ATSAnalyzer
+from services.file_handler import FileHandler
+from models.analysis import (
     AnalysisResult, 
     KeywordAnalysisRequest, 
     KeywordAnalysisResult,
@@ -19,7 +19,7 @@ from ..models.analysis import (
     Recommendation
 )
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from ..database import get_database
+from database import get_database
 
 logger = logging.getLogger(__name__)
 
