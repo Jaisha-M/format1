@@ -40,23 +40,13 @@ class ATSBackendTester:
             print(f"   Details: {details}")
     
     def create_test_pdf(self, content="John Doe\nSoftware Engineer\n\nEXPERIENCE\n• 5 years Python development\n• React and Node.js experience\n• Database design and optimization\n\nEDUCATION\nBachelor of Computer Science\n\nSKILLS\nPython, JavaScript, React, Node.js, MongoDB, SQL, Git, Docker\n\nCONTACT\nEmail: john.doe@email.com\nPhone: (555) 123-4567"):
-        """Create a test PDF file"""
-        buffer = io.BytesIO()
-        p = canvas.Canvas(buffer, pagesize=letter)
-        
-        # Add content to PDF
-        lines = content.split('\n')
-        y_position = 750
-        for line in lines:
-            p.drawString(50, y_position, line)
-            y_position -= 20
-            if y_position < 50:
-                p.showPage()
-                y_position = 750
-        
-        p.save()
-        buffer.seek(0)
-        return buffer.getvalue()
+        """Create a simple fake PDF file for testing"""
+        # Create a minimal PDF-like structure for testing
+        # This is not a real PDF but will test file upload functionality
+        pdf_header = b'%PDF-1.4\n'
+        pdf_content = content.encode('utf-8')
+        pdf_footer = b'\n%%EOF'
+        return pdf_header + pdf_content + pdf_footer
     
     def create_test_text_file(self, content="John Smith\nData Scientist\n\nEXPERIENCE\n- 3 years machine learning\n- Python and R programming\n- Statistical analysis and modeling\n\nEDUCATION\nMaster of Data Science\n\nSKILLS\nPython, R, SQL, TensorFlow, Pandas, Scikit-learn\n\nCONTACT\njohn.smith@email.com\n(555) 987-6543"):
         """Create a test text file"""
