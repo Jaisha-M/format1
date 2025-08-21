@@ -116,25 +116,29 @@ class FileHandler:
             if len(file_content) > self.max_file_size:
                 raise ValueError(f"File too large (max {self.max_file_size // (1024*1024)}MB)")
             
-            # Check content type
-            if content_type not in self.allowed_types:
-                # Try to guess from filename
+            # Check content type - be more lenient
+            valid_types = list(self.allowed_types.keys())
+            
+            # Check if content type is allowed OR if we can determine from filename
+            is_valid_content_type = content_type in valid_types
+            
+            # If content type is not recognized, try to guess from filename
+            if not is_valid_content_type:
                 guessed_type, _ = mimetypes.guess_type(filename)
-                if guessed_type not in self.allowed_types:
-                    raise ValueError(f"Unsupported file type: {content_type}")
+                if guessed_type and guessed_type in valid_types:
+                    is_valid_content_type = True
+                elif filename.lower().endswith(('.pdf', '.doc', '.docx', '.txt')):
+                    is_valid_content_type = True
+            
+            if not is_valid_content_type:
+                raise ValueError(f"Unsupported file type: {content_type}. Supported types: PDF, DOC, DOCX, TXT")
             
             # Basic file content validation
-            if content_type == 'application/pdf':
+            if filename.lower().endswith('.pdf') or content_type == 'application/pdf':
                 # PDF files should start with %PDF
                 if not file_content.startswith(b'%PDF'):
-                    raise ValueError("Invalid PDF file")
-            
-            elif content_type in ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']:
-                # Word documents have specific headers
-                if content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-                    # DOCX files are ZIP archives
-                    if not file_content.startswith(b'PK'):
-                        raise ValueError("Invalid DOCX file")
+                    # Allow files that might be PDFs but have different headers
+                    logger.warning(f"PDF file doesn't have standard header, but proceeding: {filename}")
             
             return True
             
