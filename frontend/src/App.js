@@ -8,31 +8,109 @@ import ScoreDisplay from './components/ScoreDisplay';
 import IssuesPanel from './components/IssuesPanel';
 import SectionsAnalysis from './components/SectionsAnalysis';
 import { Toaster } from './components/ui/toaster';
-import { mockAnalysisResult } from './data/mock';
+import { useToast } from './hooks/use-toast';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const HomePage = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('idle');
   const [analysisResult, setAnalysisResult] = useState(null);
   const [jobDescription, setJobDescription] = useState('');
+  const { toast } = useToast();
 
-  const handleFileUpload = (file) => {
+  const handleFileUpload = async (file) => {
     setUploadedFile(file);
     setUploadStatus('uploading');
     
-    // Simulate analysis with mock data
-    setTimeout(() => {
-      setAnalysisResult(mockAnalysisResult);
-      setUploadStatus('success');
-    }, 2000);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      if (jobDescription) {
+        formData.append('job_description', jobDescription);
+      }
+
+      const response = await axios.post(`${API}/resume/analyze`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        timeout: 60000, // 60 second timeout
+      });
+
+      if (response.data.success) {
+        setAnalysisResult(response.data.data);
+        setUploadStatus('success');
+        toast({
+          title: "Analysis Complete!",
+          description: `Your resume scored ${response.data.data.overall_score}% overall.`
+        });
+      } else {
+        throw new Error('Analysis failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadStatus('error');
+      
+      let errorMessage = 'Failed to analyze resume. Please try again.';
+      if (error.response?.status === 400) {
+        errorMessage = error.response.data.detail || 'Invalid file format or size.';
+      } else if (error.response?.status === 422) {
+        errorMessage = 'Could not parse resume content. Please ensure it\'s a text-based document.';
+      } else if (error.code === 'ECONNABORTED') {
+        errorMessage = 'Analysis timeout. Please try with a smaller file.';
+      }
+      
+      toast({
+        title: "Analysis Failed",
+        description: errorMessage,
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleJobDescriptionChange = (description) => {
+  const handleJobDescriptionChange = async (description) => {
     setJobDescription(description);
-    // In real implementation, this would re-analyze the resume with new job description
-    if (analysisResult && description) {
-      // Update analysis result with new keyword matching
-      console.log('Re-analyzing with job description:', description);
+    
+    // If we already have analysis results and a new job description is provided,
+    // re-analyze for keyword matching
+    if (analysisResult && description && uploadedFile) {
+      try {
+        const response = await axios.post(`${API}/resume/keywords`, {
+          resume_text: analysisResult.raw_text || '',
+          job_description: description
+        });
+
+        if (response.data.success) {
+          // Update the analysis result with new keyword data
+          setAnalysisResult(prev => ({
+            ...prev,
+            keyword_match: response.data.data.keyword_match,
+            missing_keywords: response.data.data.missing_keywords,
+            found_keywords: response.data.data.found_keywords,
+            // Recalculate overall score
+            overall_score: Math.round((
+              prev.ats_compatibility * 0.25 +
+              prev.format_score * 0.25 +
+              response.data.data.keyword_match * 0.30 +
+              prev.skills_match * 0.20
+            ))
+          }));
+          
+          toast({
+            title: "Keywords Updated",
+            description: `Updated keyword matching based on job description.`
+          });
+        }
+      } catch (error) {
+        console.error('Keyword analysis error:', error);
+        toast({
+          title: "Keyword Analysis Failed",
+          description: "Could not analyze keywords with job description.",
+          variant: "destructive"
+        });
+      }
     }
   };
 
