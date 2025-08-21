@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Upload</title>
+</head>
+<body>
+    <h1>Manual Upload Test</h1>
+    <button onclick="simulateUpload()">Simulate File Upload</button>
+    
+    <script>
+        function simulateUpload() {
+            // Create a mock file
+            const mockFile = new File(['mock resume content'], 'resume.pdf', { type: 'application/pdf' });
+            
+            // Get React root element
+            const app = window.parent.document.querySelector('#root');
+            if (app && app._reactInternalFiber) {
+                console.log('React app found, triggering upload...');
+            }
+            
+            // Try to access the upload handler through the window object
+            if (window.parent && window.parent.handleFileUpload) {
+                window.parent.handleFileUpload(mockFile);
+            }
+            
+            alert('Upload simulation attempted');
+        }
+    </script>
+</body>
+</html>
