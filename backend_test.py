@@ -10,8 +10,6 @@ import time
 import os
 import tempfile
 from pathlib import Path
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 import io
 
 # Configuration
