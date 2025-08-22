@@ -273,15 +273,18 @@ frontend:
 
   - task: "Document Type Detection"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Ready for testing - verify system correctly rejects non-resume documents (bills, invoices) with appropriate error messages"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Document type detection works correctly. Non-resume documents (tested with electric bill) are properly rejected with clear error message: 'The uploaded document does not appear to be a resume. Please upload a valid resume file.'"
 
   - task: "Resume Analysis and Scoring"
     implemented: true
