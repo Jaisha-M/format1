@@ -13,7 +13,7 @@ from pathlib import Path
 import io
 
 # Configuration
-BASE_URL = "https://ats-clone.preview.emergentagent.com/api"
+BASE_URL = "https://resume-score.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 class ATSBackendTester:
