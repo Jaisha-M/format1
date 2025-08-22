@@ -371,3 +371,5 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "Comprehensive backend testing completed. 14 out of 15 tests passed (93.3% success rate). All core functionality working correctly. Only issue is PDF parsing with fake PDF format, which is expected behavior. System ready for production use."
+  - agent: "testing"
+    message: "Starting comprehensive frontend testing for Bruwrite ATS Resume Checker. Will test all 10 frontend tasks including homepage loading, form validation, file upload, resume analysis, results display, and responsive design."
