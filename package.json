@@ -1,0 +1,39 @@
+{
+  "name": "bruwrite-ats-resume-checker",
+  "version": "1.0.0",
+  "description": "Professional ATS Resume Checker - Analyze resumes for ATS compatibility",
+  "scripts": {
+    "dev": "concurrently \"cd backend && uvicorn server:app --reload --port 8001\" \"cd frontend && yarn start\"",
+    "build": "cd frontend && yarn build",
+    "start": "cd backend && uvicorn server:app --host 0.0.0.0 --port 8001",
+    "install-all": "cd frontend && yarn install && cd ../backend && pip install -r requirements.txt",
+    "docker-build": "docker-compose build",
+    "docker-start": "docker-compose up -d",
+    "docker-stop": "docker-compose down",
+    "deploy-vercel": "cd frontend && npx vercel --prod",
+    "test-backend": "cd backend && python -m pytest",
+    "test-frontend": "cd frontend && yarn test"
+  },
+  "keywords": [
+    "ats",
+    "resume",
+    "checker", 
+    "job",
+    "application",
+    "tracking",
+    "system"
+  ],
+  "author": "Bruwrite",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/bruwrite-ats-checker.git"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
