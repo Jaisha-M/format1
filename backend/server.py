@@ -6,11 +6,11 @@ from pathlib import Path
 from typing import Optional
 import logging
 
-# Import our advanced services
+# Import our comprehensive services
 from services.advanced_resume_parser import AdvancedResumeParser
-from services.ats_scoring_engine import ATSScoringEngine
+from services.comprehensive_ats_analyzer import ComprehensiveATSAnalyzer
 
-app = FastAPI(title="Bruwrite ATS Resume Checker", version="2.0.0")
+app = FastAPI(title="Bruwrite ATS Resume Checker", version="3.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,7 +22,7 @@ app.add_middleware(
 
 # Initialize services
 resume_parser = AdvancedResumeParser()
-scoring_engine = ATSScoringEngine()
+ats_analyzer = ComprehensiveATSAnalyzer()
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ def is_resume_content(text: str) -> bool:
 
 @app.get("/api/")
 async def root():
-    return {"message": "Bruwrite ATS Resume Checker API v2.0"}
+    return {"message": "Bruwrite ATS Resume Checker API v3.0 - Comprehensive Analysis"}
 
 @app.post("/api/analyze")
 async def analyze_resume_comprehensive(
@@ -72,7 +72,7 @@ async def analyze_resume_comprehensive(
     job_title: Optional[str] = Form(None),
     job_description: Optional[str] = Form(None)
 ):
-    """Comprehensive resume analysis with proper ATS scoring"""
+    """Comprehensive ATS resume analysis with detailed checklist format"""
     
     # Validate file
     if not file.filename:
@@ -110,71 +110,66 @@ async def analyze_resume_comprehensive(
                 detail="The uploaded document does not appear to be a resume. Please upload a valid resume file containing work experience, education, and skills information."
             )
         
-        # Calculate comprehensive ATS score
-        scoring_result = scoring_engine.calculate_comprehensive_score(
+        # Perform comprehensive ATS analysis
+        comprehensive_analysis = ats_analyzer.analyze_comprehensive(
             parsed_data, job_description, job_title
         )
         
-        # Format response according to frontend expectations
+        # Format response for frontend compatibility
+        executive_summary = comprehensive_analysis['executive_summary']
+        ats_scorecard = comprehensive_analysis['ats_scorecard']
+        
         response = {
-            # Overall scores
-            'overall_score': scoring_result['overall_score'],
-            'format_score': scoring_result['component_scores']['formatting_structure']['score'],
-            'keyword_score': scoring_result['component_scores']['keywords_skills']['score'], 
-            'skills_score': scoring_result['component_scores']['keywords_skills']['score'],  # Same as keyword for now
-            'experience_score': scoring_result['component_scores']['work_experience']['score'],
+            # Executive Summary
+            'overall_score': executive_summary['overall_ats_score'],
+            'keyword_match': executive_summary['keyword_match'],
+            'skills_match': executive_summary['skills_match'],
+            'formatting_readability': executive_summary['formatting_readability'],
+            'summary_statement': executive_summary['summary_statement'],
+            
+            # Detailed scores for frontend display
+            'format_score': ats_scorecard['formatting_readability'],
+            'keyword_score': ats_scorecard['keyword_match'],
+            'skills_score': ats_scorecard['skills_match'],
+            'experience_score': ats_scorecard['experience_relevance'],
             
             # Key metrics
-            'total_keywords': parsed_data['skills']['total_skills_count'],
-            'sections_count': sum(1 for section in parsed_data['sections'].values() if section.get('found', False)),
-            'word_count': parsed_data['readability']['word_count'],
-            'readability_score': int(parsed_data['readability']['readability_score']),
+            'total_keywords': len(comprehensive_analysis['detailed_analysis']['skills_section']['skills_found']['technical']) + 
+                             len(comprehensive_analysis['detailed_analysis']['skills_section']['skills_found']['soft']),
+            'sections_count': sum(1 for section in comprehensive_analysis['detailed_analysis'].values() 
+                                if isinstance(section, dict) and section.get('score', 0) > 0),
+            'word_count': len(parsed_data['raw_text'].split()),
+            'readability_score': int(comprehensive_analysis['detailed_analysis']['formatting_readability']['score']),
             
-            # Issues (convert to expected format)
+            # Convert detailed analysis to frontend format
             'issues': [],
+            'recommendations': comprehensive_analysis['final_recommendations'],
+            'missing_keywords': comprehensive_analysis['detailed_analysis']['keywords_relevance'].get('missing_keywords', []),
             
-            # Recommendations
-            'recommendations': [],
-            
-            # Job matching (if provided)
-            'missing_keywords': []
+            # Full analysis data for detailed view
+            'comprehensive_analysis': comprehensive_analysis,
+            'pie_chart_data': comprehensive_analysis['pie_chart_data']
         }
         
-        # Convert issues to frontend format
-        for weakness in scoring_result['weaknesses']:
-            response['issues'].append({
-                'severity': 'critical' if '❌' in weakness else 'warning',
-                'title': weakness.replace('❌ ', '').replace('⚠️ ', '').split(' - ')[0],
-                'description': weakness.replace('❌ ', '').replace('⚠️ ', '')
-            })
+        # Convert detailed analysis to issues format
+        detailed_analysis = comprehensive_analysis['detailed_analysis']
         
-        # Convert suggestions to frontend format
-        for suggestion in scoring_result['suggestions']:
-            response['recommendations'].append({
-                'title': suggestion['title'],
-                'description': suggestion['description'],
-                'impact': suggestion['impact'].replace('+', '').replace(' points', '')
-            })
-        
-        # Add job matching data if available
-        if scoring_result.get('job_match_analysis'):
-            job_match = scoring_result['job_match_analysis']
-            response['missing_keywords'] = job_match.get('top_missing_keywords', [])
-        
-        # Add strengths as positive issues
-        for strength in scoring_result['strengths']:
-            response['issues'].append({
-                'severity': 'info',
-                'title': 'Strength Identified',
-                'description': strength.replace('✅ ', '')
-            })
+        for section_name, section_data in detailed_analysis.items():
+            if isinstance(section_data, dict) and 'recommendations' in section_data:
+                for rec in section_data['recommendations']:
+                    severity = 'critical' if section_data.get('score', 100) < 50 else 'warning'
+                    response['issues'].append({
+                        'severity': severity,
+                        'title': f"{section_name.replace('_', ' ').title()} Issue",
+                        'description': rec
+                    })
         
         return response
         
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Analysis error: {str(e)}")
+        logger.error(f"Comprehensive analysis error: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=500, 
             detail=f"Analysis failed: {str(e)}. Please ensure your file contains readable text and is a valid resume."
