@@ -348,15 +348,18 @@ frontend:
 
   - task: "Reset Functionality"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "testing"
         comment: "Ready for testing - verify 'Check Another Resume' button properly resets form and clears results"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED - Reset functionality works perfectly. 'Check Another Resume' button properly returns to upload form, clears all form fields (file, job title, job description), and resets application state. Works correctly on both desktop and mobile."
 
   - task: "Responsive Design"
     implemented: true
