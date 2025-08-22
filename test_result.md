@@ -354,7 +354,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All backend tasks completed and tested"
+    - "Homepage Loading and Branding"
+    - "Form Elements and Validation"
+    - "File Upload Validation"
+    - "Document Type Detection"
+    - "Resume Analysis and Scoring"
+    - "Job Description Integration"
+    - "Results Display"
+    - "Error Handling and Messages"
+    - "Reset Functionality"
+    - "Responsive Design"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
