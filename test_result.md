@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the complete ATS Resume Checker backend API functionality including health checks, resume analysis, keyword analysis, history retrieval, database integration, error handling, file processing, and response validation."
+user_problem_statement: "Test the complete Bruwrite ATS Resume Checker functionality including homepage loading, form elements, file upload validation, document type detection, resume analysis, job description integration, results display, error handling, reset functionality, and responsive design."
 
 backend:
   - task: "Health Check API"
