@@ -155,152 +155,233 @@ function App() {
           </div>
         ) : (
           <div className="space-y-6">
-            {/* Header with Reset Button */}
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Analysis Results</h2>
-              <button
-                onClick={resetForm}
-                className="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
-              >
-                Check Another Resume
-              </button>
-            </div>
-
-            {/* Overall Score */}
+            {/* Executive Summary */}
             <div className="bg-white rounded-lg shadow-lg p-6">
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  Overall ATS Compatibility Score
-                </h3>
-                <div className={`text-5xl font-bold mb-4 ${getScoreColor(results.overall_score)}`}>
-                  {results.overall_score}%
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-6 mb-4">
-                  <div 
-                    className={`h-6 rounded-full transition-all duration-500 ${getScoreBarColor(results.overall_score)}`}
-                    style={{ width: `${results.overall_score}%` }}
-                  ></div>
-                </div>
-                <p className="text-gray-600">
-                  {results.overall_score >= 80 
-                    ? '✅ Excellent! Your resume is well-optimized for ATS systems.'
-                    : results.overall_score >= 60
-                    ? '⚠️ Good progress! Some improvements could boost your score.'
-                    : '❌ Your resume needs significant optimization for ATS compatibility.'
-                  }
-                </p>
-              </div>
-            </div>
-
-            {/* Detailed Scores Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                { label: 'Format & Structure', score: results.format_score, icon: '📄' },
-                { label: 'Keyword Match', score: results.keyword_score, icon: '🔍' },
-                { label: 'Skills Alignment', score: results.skills_score, icon: '🎯' },
-                { label: 'Experience Relevance', score: results.experience_score, icon: '💼' }
-              ].map((item, index) => (
-                <div key={index} className="bg-white rounded-lg shadow p-6 text-center">
-                  <div className="text-2xl mb-2">{item.icon}</div>
-                  <h4 className="font-semibold text-gray-700 mb-2">{item.label}</h4>
-                  <div className={`text-2xl font-bold mb-2 ${getScoreColor(item.score)}`}>
-                    {item.score}%
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">📊 Executive Summary</h2>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="text-center">
+                  <div className={`text-3xl font-bold mb-2 ${results.overall_score >= 80 ? 'text-green-600' : results.overall_score >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
+                    {results.overall_score}%
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className={`h-2 rounded-full ${getScoreBarColor(item.score)}`}
-                      style={{ width: `${item.score}%` }}
-                    ></div>
+                  <div className="text-sm text-gray-600">Overall ATS Score</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-3xl font-bold mb-2 ${results.keyword_match >= 80 ? 'text-green-600' : results.keyword_match >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
+                    {results.keyword_match}%
+                  </div>
+                  <div className="text-sm text-gray-600">Keyword Match</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-3xl font-bold mb-2 ${results.skills_match >= 80 ? 'text-green-600' : results.skills_match >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
+                    {results.skills_match}%
+                  </div>
+                  <div className="text-sm text-gray-600">Skills Match</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-3xl font-bold mb-2 ${results.formatting_readability >= 80 ? 'text-green-600' : results.formatting_readability >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
+                    {results.formatting_readability}%
+                  </div>
+                  <div className="text-sm text-gray-600">Formatting & Readability</div>
+                </div>
+              </div>
+              
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-blue-900 mb-2">Summary Statement</h3>
+                <p className="text-blue-800">{results.summary_statement}</p>
+              </div>
+            </div>
+
+            {/* Detailed Section Analysis */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">🔍 Detailed Section Analysis</h2>
+              
+              {/* Contact Information */}
+              <div className="mb-6 border-b pb-4">
+                <h3 className="text-lg font-semibold mb-3">A) Contact Information</h3>
+                <div className="bg-gray-50 p-4 rounded">
+                  <h4 className="font-medium mb-2">✅ Checklist Analysis:</h4>
+                  {results.comprehensive_analysis?.detailed_analysis?.contact_information && (
+                    <div className="space-y-1 text-sm">
+                      {Object.entries(results.comprehensive_analysis.detailed_analysis.contact_information.checklist).map(([key, value]) => (
+                        <div key={key} className="flex items-center">
+                          <span className={value ? "text-green-600" : "text-red-600"}>
+                            {value ? "✓" : "✗"}
+                          </span>
+                          <span className="ml-2">{key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  <div className="mt-3">
+                    <h4 className="font-medium mb-2">📌 Recommendations:</h4>
+                    {results.comprehensive_analysis?.detailed_analysis?.contact_information?.recommendations?.map((rec, idx) => (
+                      <div key={idx} className="text-sm text-gray-700">• {rec}</div>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            {/* Key Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white rounded-lg shadow p-4 text-center">
-                <div className="text-2xl font-bold text-blue-600">{results.total_keywords}</div>
-                <div className="text-sm text-gray-600">Keywords Found</div>
-              </div>
-              <div className="bg-white rounded-lg shadow p-4 text-center">
-                <div className="text-2xl font-bold text-green-600">{results.sections_count}/6</div>
-                <div className="text-sm text-gray-600">Resume Sections</div>
-              </div>
-              <div className="bg-white rounded-lg shadow p-4 text-center">
-                <div className="text-2xl font-bold text-purple-600">{results.word_count}</div>
-                <div className="text-sm text-gray-600">Total Words</div>
-              </div>
-              <div className="bg-white rounded-lg shadow p-4 text-center">
-                <div className="text-2xl font-bold text-orange-600">{results.readability_score}%</div>
-                <div className="text-sm text-gray-600">Readability</div>
-              </div>
-            </div>
-
-            {/* Issues and Recommendations */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Critical Issues */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold text-red-600 mb-4 flex items-center">
-                  🚨 Critical Issues ({results.issues.filter(i => i.severity === 'critical').length})
-                </h3>
-                <div className="space-y-3">
-                  {results.issues.filter(i => i.severity === 'critical').map((issue, index) => (
-                    <div key={index} className="p-3 bg-red-50 border-l-4 border-red-500 rounded">
-                      <h4 className="font-semibold text-red-800">{issue.title}</h4>
-                      <p className="text-sm text-red-700 mt-1">{issue.description}</p>
+              {/* Skills Section Analysis */}
+              <div className="mb-6 border-b pb-4">
+                <h3 className="text-lg font-semibold mb-3">C) Skills Section</h3>
+                <div className="bg-gray-50 p-4 rounded">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-medium mb-2">Technical Skills Found:</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {results.comprehensive_analysis?.detailed_analysis?.skills_section?.skills_found?.technical?.map((skill, idx) => (
+                          <span key={idx} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">{skill}</span>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                  {results.issues.filter(i => i.severity === 'warning').map((issue, index) => (
-                    <div key={index} className="p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded">
-                      <h4 className="font-semibold text-yellow-800">{issue.title}</h4>
-                      <p className="text-sm text-yellow-700 mt-1">{issue.description}</p>
+                    <div>
+                      <h4 className="font-medium mb-2">Soft Skills Found:</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {results.comprehensive_analysis?.detailed_analysis?.skills_section?.skills_found?.soft?.map((skill, idx) => (
+                          <span key={idx} className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">{skill}</span>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                  {results.issues.length === 0 && (
-                    <p className="text-gray-500 text-center py-4">✅ No major issues detected!</p>
+                  </div>
+                  
+                  {results.comprehensive_analysis?.detailed_analysis?.skills_section?.job_match_percentage !== undefined && (
+                    <div className="mt-3">
+                      <div className="text-sm font-medium">
+                        Job Description Match: {results.comprehensive_analysis.detailed_analysis.skills_section.job_match_percentage.toFixed(1)}%
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
 
-              {/* Recommendations */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold text-green-600 mb-4 flex items-center">
-                  💡 Recommendations ({results.recommendations.length})
-                </h3>
-                <div className="space-y-3">
-                  {results.recommendations.map((rec, index) => (
-                    <div key={index} className="p-3 bg-green-50 border-l-4 border-green-500 rounded">
-                      <div className="flex justify-between items-start mb-1">
-                        <h4 className="font-semibold text-green-800">{rec.title}</h4>
-                        <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">
-                          +{rec.impact} pts
-                        </span>
+              {/* Work Experience Analysis */}
+              <div className="mb-6 border-b pb-4">
+                <h3 className="text-lg font-semibold mb-3">D) Work Experience</h3>
+                <div className="bg-gray-50 p-4 rounded">
+                  {results.comprehensive_analysis?.detailed_analysis?.work_experience && (
+                    <div>
+                      <div className="grid grid-cols-2 gap-4 mb-3">
+                        <div className="text-sm">
+                          <span className="font-medium">Quantifiable Impact: </span>
+                          <span className={results.comprehensive_analysis.detailed_analysis.work_experience.quantifiable_impact_percentage > 30 ? "text-green-600" : "text-red-600"}>
+                            {results.comprehensive_analysis.detailed_analysis.work_experience.quantifiable_impact_percentage.toFixed(1)}%
+                          </span>
+                        </div>
+                        <div className="text-sm">
+                          <span className="font-medium">Score: </span>
+                          <span className={results.comprehensive_analysis.detailed_analysis.work_experience.score >= 70 ? "text-green-600" : "text-yellow-600"}>
+                            {results.comprehensive_analysis.detailed_analysis.work_experience.score}%
+                          </span>
+                        </div>
                       </div>
-                      <p className="text-sm text-green-700">{rec.description}</p>
+                      
+                      <h4 className="font-medium mb-2">📌 Recommendations:</h4>
+                      {results.comprehensive_analysis.detailed_analysis.work_experience.recommendations?.map((rec, idx) => (
+                        <div key={idx} className="text-sm text-gray-700">• {rec}</div>
+                      ))}
                     </div>
-                  ))}
+                  )}
+                </div>
+              </div>
+
+              {/* Keywords & Industry Relevance */}
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-3">H) Keywords & Industry Relevance</h3>
+                <div className="bg-gray-50 p-4 rounded">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-medium mb-2">Keyword Match Analysis:</h4>
+                      <div className="text-sm space-y-1">
+                        <div>Match Percentage: <span className="font-medium">{results.keyword_match}%</span></div>
+                        <div>Total Keywords Found: <span className="font-medium">{results.total_keywords}</span></div>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-2">Missing Keywords:</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {results.missing_keywords?.slice(0, 10).map((keyword, idx) => (
+                          <span key={idx} className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">{keyword}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Missing Keywords (if job description provided) */}
-            {results.missing_keywords && results.missing_keywords.length > 0 && (
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold text-blue-600 mb-4">
-                  🔍 Missing Keywords from Job Description
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                  {results.missing_keywords.map((keyword, index) => (
-                    <div key={index} className="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm text-center">
-                      {keyword}
-                    </div>
-                  ))}
+            {/* Overall ATS Scorecard */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">📈 Overall ATS Scorecard</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <div className="space-y-4">
+                    {[
+                      { label: 'Keyword Match', score: results.keyword_match, color: 'blue' },
+                      { label: 'Skills Match', score: results.skills_match, color: 'green' },
+                      { label: 'Formatting & Structure', score: results.formatting_readability, color: 'yellow' },
+                      { label: 'Experience Relevance', score: results.experience_score, color: 'purple' }
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex items-center justify-between">
+                        <span className="font-medium">{item.label}:</span>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-32 bg-gray-200 rounded-full h-3">
+                            <div 
+                              className={`h-3 rounded-full bg-${item.color}-600`}
+                              style={{ width: `${item.score}%` }}
+                            ></div>
+                          </div>
+                          <span className="font-bold w-12">{item.score}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 mt-4">
-                  💡 Consider adding these keywords naturally throughout your resume to improve job relevance.
-                </p>
+                
+                <div>
+                  <h3 className="font-semibold mb-3">Overall ATS Readiness</h3>
+                  <div className="text-center">
+                    <div className={`text-6xl font-bold mb-2 ${getScoreColor(results.overall_score)}`}>
+                      {results.overall_score}%
+                    </div>
+                    <div className="text-lg text-gray-600">
+                      {results.overall_score >= 80 ? '🎉 Excellent' : 
+                       results.overall_score >= 65 ? '👍 Good' : 
+                       results.overall_score >= 50 ? '⚠️ Needs Work' : '❌ Poor'}
+                    </div>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
+
+            {/* Final Recommendations */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">🎯 Final Recommendations - Top 10 Improvements</h2>
+              
+              <div className="space-y-3">
+                {results.recommendations?.slice(0, 10).map((rec, idx) => (
+                  <div key={idx} className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                    <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">
+                      {idx + 1}
+                    </div>
+                    <div className="text-gray-800">{rec}</div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-6 p-4 bg-green-50 rounded-lg">
+                <h3 className="font-semibold text-green-900 mb-2">💡 Pro Tips for ATS Success:</h3>
+                <ul className="text-sm text-green-800 space-y-1">
+                  <li>• Save your resume as both .docx and .pdf versions</li>
+                  <li>• Use standard section headings (Work Experience, Education, Skills)</li>
+                  <li>• Include keywords naturally throughout your resume, not just in a skills section</li>
+                  <li>• Quantify your achievements with specific numbers and percentages</li>
+                  <li>• Keep formatting simple - avoid tables, text boxes, and complex layouts</li>
+                </ul>
+              </div>
+            </div>
           </div>
         )}
       </div>
