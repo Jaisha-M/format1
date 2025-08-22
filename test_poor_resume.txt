@@ -1,0 +1,16 @@
+john doe
+email: john@email.com
+
+work experience:
+worked at some company for 2 years doing stuff with computers
+did programming and fixed bugs
+made websites
+
+skills:
+html
+css
+javascript
+some python
+
+education:
+went to college

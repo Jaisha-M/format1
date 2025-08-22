@@ -1,0 +1,66 @@
+JOHN SMITH
+Senior Software Engineer
+Email: john.smith@email.com | Phone: (555) 123-4567
+LinkedIn: linkedin.com/in/johnsmith | GitHub: github.com/johnsmith
+
+PROFESSIONAL SUMMARY
+Experienced Senior Software Engineer with 8+ years of expertise in full-stack development, cloud architecture, and team leadership. Proven track record of delivering scalable web applications using React, Node.js, Python, and AWS. Strong background in agile methodologies, DevOps practices, and mentoring junior developers.
+
+TECHNICAL SKILLS
+• Programming Languages: JavaScript, Python, Java, TypeScript, SQL
+• Frontend Technologies: React, Vue.js, HTML5, CSS3, Redux, Next.js
+• Backend Technologies: Node.js, Express.js, Django, Flask, REST APIs, GraphQL
+• Databases: PostgreSQL, MongoDB, MySQL, Redis
+• Cloud Platforms: AWS (EC2, S3, Lambda, RDS), Azure, Google Cloud Platform
+• DevOps Tools: Docker, Kubernetes, Jenkins, GitLab CI/CD, Terraform
+• Version Control: Git, GitHub, GitLab
+• Testing: Jest, Cypress, Selenium, Unit Testing, Integration Testing
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | 2020 - Present
+• Led development of microservices architecture serving 2M+ users, improving system performance by 40%
+• Architected and implemented React-based dashboard reducing customer support tickets by 35%
+• Mentored team of 5 junior developers, establishing code review processes and best practices
+• Collaborated with product managers and designers to deliver features ahead of schedule
+• Implemented automated testing pipeline reducing deployment time from 2 hours to 15 minutes
+
+Software Engineer | StartupXYZ | 2018 - 2020
+• Developed full-stack web applications using React, Node.js, and PostgreSQL
+• Built RESTful APIs handling 100K+ daily requests with 99.9% uptime
+• Optimized database queries resulting in 50% faster page load times
+• Participated in agile development process with 2-week sprints
+• Contributed to open-source projects and technical documentation
+
+Junior Software Developer | WebSolutions Ltd. | 2016 - 2018
+• Created responsive web interfaces using HTML5, CSS3, and JavaScript
+• Integrated third-party APIs and payment gateways for e-commerce platforms
+• Debugged and resolved production issues, maintaining 99% application availability
+• Collaborated with cross-functional teams to deliver client projects on time
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Technology | 2012 - 2016
+GPA: 3.8/4.0
+
+CERTIFICATIONS
+• AWS Certified Solutions Architect - Associate (2022)
+• Certified Kubernetes Administrator (CKA) (2021)
+• Google Cloud Professional Developer (2020)
+
+PROJECTS
+E-Commerce Platform | Personal Project
+• Built full-stack e-commerce application using React, Node.js, and Stripe API
+• Implemented user authentication, product catalog, and order management system
+• Deployed on AWS with auto-scaling and load balancing
+
+Task Management App | Open Source Contribution
+• Contributed to React-based task management application with 1K+ GitHub stars
+• Implemented drag-and-drop functionality and real-time collaboration features
+• Added comprehensive test coverage increasing from 60% to 90%
+
+ACHIEVEMENTS
+• Increased team productivity by 30% through implementation of automated workflows
+• Reduced application load time by 45% through performance optimization
+• Successfully delivered 15+ projects on time and within budget
+• Recognized as "Employee of the Quarter" for outstanding technical contributions

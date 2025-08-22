@@ -1,0 +1,17 @@
+ELECTRIC BILL STATEMENT
+Account Number: 123456789
+Service Address: 123 Main Street, Anytown, USA
+
+Billing Period: January 1, 2024 - January 31, 2024
+Due Date: February 15, 2024
+
+Previous Balance: $85.42
+Current Charges: $92.18
+Total Amount Due: $177.60
+
+Usage Summary:
+kWh Used: 850
+Rate: $0.108 per kWh
+
+Please pay by the due date to avoid late fees.
+Customer Service: 1-800-555-POWER
